@@ -34,24 +34,30 @@ SCISSORS = "Scissors"
 ELF_MAP = {"A": ROCK, "B": PAPER, "C": SCISSORS}
 ME_MAP = {"X": ROCK, "Y": PAPER, "Z": SCISSORS}
 
+LOSE = "Lose"
+DRAW = "Draw"
+WIN = "Win"
 
-def unencrypt_elf(elf_hand):
-    return ELF_MAP[elf_hand]
-
-
-def unencrypt_me(me_hand):
-    return ME_MAP[me_hand]
+DESIRED_MAP = {"X": LOSE, "Y": DRAW, "Z": WIN}
 
 
-def convert_to_unencrypted_tuple(round: Tuple[str]) -> Tuple[str]:
+def unencrypt_hand(hand, the_map):
+    return the_map[hand]
+
+
+def convert_to_unencrypted_tuple(round: Tuple[str], left_map, right_map) -> Tuple[str]:
     elf, me = round
-    return (unencrypt_elf(elf), unencrypt_me(me))
+    return (unencrypt_hand(elf, left_map), unencrypt_hand(me, right_map))
 
 
-def convert_to_unencrypted_tuples(data: str) -> List[Tuple[int]]:
+def convert_to_unencrypted_tuples(
+    data: str, left_map=ELF_MAP, right_map=ME_MAP
+) -> List[Tuple[int]]:
     the_tuples = [tuple(l.strip().split()) for l in data.strip().splitlines()]
     print(the_tuples)
-    unencrypted_tuples = [convert_to_unencrypted_tuple(t) for t in the_tuples]
+    unencrypted_tuples = [
+        convert_to_unencrypted_tuple(t, left_map, right_map) for t in the_tuples
+    ]
     print(unencrypted_tuples)
     return unencrypted_tuples
 
@@ -64,6 +70,7 @@ WIN_SCORE_LOOKUP = {
     (SCISSORS, ROCK): (0, 6),
     (SCISSORS, PAPER): (6, 0),
 }
+
 
 DRAW_SCORE = 3
 
@@ -98,20 +105,51 @@ def convert_to_total_score(round_scores: List[Tuple[int]]) -> Tuple[int]:
     return total_scores
 
 
-def total_scores(data: str) -> Tuple[int]:
-    unencrypted_tuples = convert_to_unencrypted_tuples(data)
+def calculate_scores(unencrypted_tuples: List[Tuple[int]]) -> Tuple[int]:
     win_scores = convert_to_win_scores(unencrypted_tuples)
     elf, me = convert_to_total_score(win_scores)
     return (elf, me)
+
+
+def total_scores(data: str) -> Tuple[int]:
+    unencrypted_tuples = convert_to_unencrypted_tuples(data)
+    return calculate_scores(unencrypted_tuples)
 
 
 def my_total_score(data: str) -> int:
     return total_scores(data)[1]
 
 
+DESIRED_MATCH_LOOKUP = {
+    (ROCK, LOSE): (ROCK, SCISSORS),
+    (ROCK, DRAW): (ROCK, ROCK),
+    (ROCK, WIN): (ROCK, PAPER),
+    (PAPER, LOSE): (PAPER, ROCK),
+    (PAPER, DRAW): (PAPER, PAPER),
+    (PAPER, WIN): (PAPER, SCISSORS),
+    (SCISSORS, LOSE): (SCISSORS, PAPER),
+    (SCISSORS, DRAW): (SCISSORS, SCISSORS),
+    (SCISSORS, WIN): (SCISSORS, ROCK),
+}
+
+
+def convert_to_desired_match(rounds: List[Tuple[str]]) -> List[Tuple[str]]:
+    desired_match = [DESIRED_MATCH_LOOKUP[round] for round in rounds]
+    print(desired_match)
+    return desired_match
+
+
+def my_new_total_score(data: str) -> int:
+    unencrypted_tuples = convert_to_unencrypted_tuples(data, right_map=DESIRED_MAP)
+    desired_match = convert_to_desired_match(unencrypted_tuples)
+    return calculate_scores(desired_match)[1]
+
+
 def main():
     my_score = my_total_score(get_input())
     print(f"Your total score is {my_score}")
+    my_new_score = my_new_total_score(get_input())
+    print(f"Your new total score is {my_new_score}")
 
 
 if __name__ == "__main__":
