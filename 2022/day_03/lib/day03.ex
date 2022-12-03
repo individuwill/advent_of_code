@@ -3,17 +3,14 @@ defmodule Day03 do
   Documentation for `Day03`.
   """
 
-  @doc """
-  Hello world.
+  def unique_item([a, b, c]) do
+    a_set = MapSet.new(String.to_charlist(a))
+    b_set = MapSet.new(String.to_charlist(b))
+    c_set = MapSet.new(String.to_charlist(c))
 
-  ## Examples
-
-      iex> Day03.hello()
-      :world
-
-  """
-  def hello do
-    :world
+    MapSet.intersection(MapSet.intersection(a_set, b_set), c_set)
+    |> MapSet.to_list()
+    |> List.to_string()
   end
 
   def unique_item(line) do
@@ -54,7 +51,19 @@ defmodule Day03 do
       |> Enum.map(&score_item/1)
       |> Enum.sum()
 
-    IO.inspect(answer)
+    answer
+  end
+
+  def answer_02_sum_badges(input) do
+    answer =
+      input
+      |> String.trim()
+      |> String.split("\n")
+      |> Enum.chunk_every(3)
+      |> Enum.map(&unique_item/1)
+      |> Enum.map(&score_item/1)
+      |> Enum.sum()
+
     answer
   end
 end

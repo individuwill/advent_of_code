@@ -1,3 +1,5 @@
 input = File.read!("./input.txt")
 answer_01 = Day03.answer_01_sum_priorities(input)
 IO.puts("Answer 01 - The priorities are: #{answer_01}")
+answer_02 = Day03.answer_02_sum_badges(input)
+IO.puts("Answer 02 - The badges are: #{answer_02}")
