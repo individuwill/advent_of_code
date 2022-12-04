@@ -30,7 +30,7 @@ defmodule Day04 do
     |> List.to_tuple()
   end
 
-  def is_one_a_subset({set1, set2}) do
+  def is_one_a_subset?({set1, set2}) do
     MapSet.subset?(set1, set2) || MapSet.subset?(set2, set1)
   end
 
@@ -43,17 +43,23 @@ defmodule Day04 do
     |> Enum.map(&tuples_to_ranges/1)
     |> Enum.map(&ranges_to_lists/1)
     |> Enum.map(&lists_to_sets/1)
-    |> dbg()
   end
 
   def answer_01(input) do
     input
     |> assignments
-    |> Enum.map(&is_one_a_subset/1)
+    |> Enum.map(&is_one_a_subset?/1)
     |> Enum.count(&(&1 == true))
-    |> dbg()
+  end
+
+  def do_either_overlap?({set1, set2}) do
+    not MapSet.disjoint?(set1, set2)
   end
 
   def answer_02(input) do
+    input
+    |> assignments
+    |> Enum.map(&do_either_overlap?/1)
+    |> Enum.count(&(&1 == true))
   end
 end

@@ -15,7 +15,7 @@ defmodule Day04Test do
   end
 
   test "answer 02 sample" do
-    assert Day04.answer_02(sample()) == -1
+    assert Day04.answer_02(sample()) == 4
   end
 
   test "answer 01 input" do
@@ -23,6 +23,6 @@ defmodule Day04Test do
   end
 
   test "answer 02 input" do
-    assert Day04.answer_02(input()) == -1
+    assert Day04.answer_02(input()) == 808
   end
 end
