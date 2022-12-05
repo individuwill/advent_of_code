@@ -11,84 +11,35 @@ defmodule Day05 do
     IO.puts("Answer 02 - #{answer_02}")
   end
 
-  def parse_stack_row(row) do
-    row
-    |> Enum.chunk_every(4)
-    |> Enum.map(&List.to_string/1)
-    |> Enum.map(&String.trim/1)
-    |> Enum.map(&String.replace(&1, "[", ""))
-    |> Enum.map(&String.replace(&1, "]", ""))
-  end
-
-  def build_stacks(input) do
-    input
-    |> String.split("\n")
-    |> Enum.map(&String.to_charlist/1)
-    |> Enum.map(&parse_stack_row/1)
-    |> List.zip()
-    |> Enum.map(&Tuple.to_list/1)
-    |> Enum.map(&Enum.reverse/1)
-    |> Enum.map(fn list -> Enum.filter(list, fn l -> l != "" end) end)
-    |> Enum.map(fn [name | items] -> {name, items} end)
-    |> Enum.into(%{})
-  end
-
   def parse_instructions(input) do
     Regex.scan(~r/^move (\d+) from (\d+) to (\d+)$/m, input, capture: :all_but_first)
     |> Enum.map(&List.to_tuple/1)
     |> Enum.map(fn {count, from, to} -> {String.to_integer(count), from, to} end)
   end
 
-  def move(stacks, {count, from, to}, keep_order \\ false) do
-    IO.puts("moving #{count} blocks from stack #{from} to stack #{to}")
-    IO.inspect(stacks)
-    {new_from, to_move} = Enum.split(stacks[from], length(stacks[from]) - count)
-    IO.puts("moving #{to_move}")
-    new_to = Enum.concat(stacks[to], if(keep_order, do: to_move, else: Enum.reverse(to_move)))
-    new_stack = %{stacks | from => new_from, to => new_to}
-    IO.inspect(new_stack)
-    new_stack
-  end
-
-  def arrange(stacks, [], _keep_order) do
-    stacks
-  end
-
-  def arrange(stacks, [next_instruction | remaining_instructions], keep_order \\ false) do
-    arrange(move(stacks, next_instruction, keep_order), remaining_instructions, keep_order)
-  end
-
   def parse_input(input) do
     [stack_text, instruction_text] = String.split(input, "\n\n")
-
-    stacks = build_stacks(stack_text)
-    dbg(stacks)
+    ship = Ship.new_from_input(stack_text)
+    dbg(ship)
 
     instructions = parse_instructions(instruction_text)
     dbg(instructions)
-    {stacks, instructions}
-  end
-
-  def get_tops(stacks) do
-    stacks
-    |> Map.values()
-    |> Enum.map(&List.last/1)
-    |> List.to_string()
+    {ship, instructions}
   end
 
   def answer01(input) do
-    {stacks, instructions} = parse_input(input)
+    {ship, instructions} = parse_input(input)
 
-    result = arrange(stacks, instructions)
+    result = Ship.arrange(ship, instructions)
 
-    get_tops(result)
+    Ship.get_tops(result)
   end
 
   def answer02(input) do
-    {stacks, instructions} = parse_input(input)
+    {ship, instructions} = parse_input(input)
 
-    result = arrange(stacks, instructions, true)
+    result = Ship.arrange(ship, instructions, true)
 
-    get_tops(result)
+    Ship.get_tops(result)
   end
 end
