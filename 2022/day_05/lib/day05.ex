@@ -7,8 +7,8 @@ defmodule Day05 do
     input = File.read!("./input.txt")
     answer_01 = answer01(input)
     IO.puts("Answer 01 - #{answer_01}")
-    # answer_02 = answer02(input)
-    # IO.puts("Answer 02 - #{answer_02}")
+    answer_02 = answer02(input)
+    IO.puts("Answer 02 - #{answer_02}")
   end
 
   def parse_stack_row(row) do
@@ -39,26 +39,26 @@ defmodule Day05 do
     |> Enum.map(fn {count, from, to} -> {String.to_integer(count), from, to} end)
   end
 
-  def move(stacks, {count, from, to}) do
+  def move(stacks, {count, from, to}, keep_order \\ false) do
     IO.puts("moving #{count} blocks from stack #{from} to stack #{to}")
     IO.inspect(stacks)
     {new_from, to_move} = Enum.split(stacks[from], length(stacks[from]) - count)
     IO.puts("moving #{to_move}")
-    new_to = Enum.concat(stacks[to], Enum.reverse(to_move))
+    new_to = Enum.concat(stacks[to], if(keep_order, do: to_move, else: Enum.reverse(to_move)))
     new_stack = %{stacks | from => new_from, to => new_to}
     IO.inspect(new_stack)
     new_stack
   end
 
-  def arrange(stacks, []) do
+  def arrange(stacks, [], _keep_order) do
     stacks
   end
 
-  def arrange(stacks, [next_instruction | remaining_instructions]) do
-    arrange(move(stacks, next_instruction), remaining_instructions)
+  def arrange(stacks, [next_instruction | remaining_instructions], keep_order \\ false) do
+    arrange(move(stacks, next_instruction, keep_order), remaining_instructions, keep_order)
   end
 
-  def answer01(input) do
+  def parse_input(input) do
     [stack_text, instruction_text] = String.split(input, "\n\n")
 
     stacks = build_stacks(stack_text)
@@ -66,15 +66,29 @@ defmodule Day05 do
 
     instructions = parse_instructions(instruction_text)
     dbg(instructions)
+    {stacks, instructions}
+  end
 
-    result = arrange(stacks, instructions)
-
-    result
+  def get_tops(stacks) do
+    stacks
     |> Map.values()
     |> Enum.map(&List.last/1)
     |> List.to_string()
   end
 
+  def answer01(input) do
+    {stacks, instructions} = parse_input(input)
+
+    result = arrange(stacks, instructions)
+
+    get_tops(result)
+  end
+
   def answer02(input) do
+    {stacks, instructions} = parse_input(input)
+
+    result = arrange(stacks, instructions, true)
+
+    get_tops(result)
   end
 end

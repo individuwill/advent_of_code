@@ -14,15 +14,15 @@ defmodule Day05Test do
     assert Day05.answer01(sample()) == "CMZ"
   end
 
-  # test "answer 02 sample" do
-  #   assert Day05.answer02(sample()) == -1
-  # end
+  test "answer 02 sample" do
+    assert Day05.answer02(sample()) == "MCD"
+  end
 
   test "answer 01 input" do
     assert Day05.answer01(input()) == "RFFFWBPNS"
   end
 
-  # test "answer 02 input" do
-  #   assert Day05.answer02(input()) == -1
-  # end
+  test "answer 02 input" do
+    assert Day05.answer02(input()) == "CQQBBJFCS"
+  end
 end
