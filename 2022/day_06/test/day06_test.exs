@@ -6,10 +6,6 @@ defmodule Day06Test do
     File.read!("./input.txt")
   end
 
-  def sample do
-    File.read!("./sample.txt")
-  end
-
   test "answer 01 sample 1" do
     assert Day06.answer01("mjqjpqmgbljsphdztnvjfqwrcgsmlb") == 7
   end
@@ -30,15 +26,31 @@ defmodule Day06Test do
     assert Day06.answer01("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw") == 11
   end
 
-  # test "answer 02 sample" do
-  #   assert Day06.answer02(sample()) == -1
-  # end
+  test "answer 02 sample 1" do
+    assert Day06.answer02("mjqjpqmgbljsphdztnvjfqwrcgsmlb") == 19
+  end
+
+  test "answer 02 sample 2" do
+    assert Day06.answer02("bvwbjplbgvbhsrlpgdmjqwftvncz") == 23
+  end
+
+  test "answer 02 sample 3" do
+    assert Day06.answer02("nppdvjthqldpwncqszvftbrmjlhg") == 23
+  end
+
+  test "answer 02 sample 4" do
+    assert Day06.answer02("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg") == 29
+  end
+
+  test "answer 02 sample 5" do
+    assert Day06.answer02("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw") == 26
+  end
 
   test "answer 01 input" do
     assert Day06.answer01(input()) == 1356
   end
 
-  # test "answer 02 input" do
-  #   assert Day06.answer02(input()) == -1
-  # end
+  test "answer 02 input" do
+    assert Day06.answer02(input()) == 2564
+  end
 end
