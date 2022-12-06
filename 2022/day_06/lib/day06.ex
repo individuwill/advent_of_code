@@ -19,12 +19,10 @@ defmodule Day06 do
   end
 
   def calculate(input, chunks) do
-    slides =
-      input
-      |> String.to_charlist()
-      |> num_of_slides(chunks)
-
-    slides + chunks
+    input
+    |> String.to_charlist()
+    |> num_of_slides(chunks)
+    |> Kernel.+(chunks)
   end
 
   def answer01(input) do
