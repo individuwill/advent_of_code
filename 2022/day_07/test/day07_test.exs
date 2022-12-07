@@ -18,6 +18,14 @@ defmodule Day07Test do
     assert Day07.answer01(input()) == 1_543_140
   end
 
+  test "answer 2 sample" do
+    assert Day07.answer02(sample()) == 24_933_642
+  end
+
+  test "answer 2 input" do
+    assert Day07.answer02(input()) == 1_117_448
+  end
+
   test "total folder size" do
     assert Folder.size(Day07.parse(sample())) == 48_381_165
   end

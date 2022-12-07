@@ -2,6 +2,8 @@ defmodule Day07 do
   @moduledoc """
   Documentation for `Day07`.
   """
+  @total_space 70_000_000
+  @required_free_space 30_000_000
 
   def instruct("$ cd " <> dir) do
     {:cd, dir}
@@ -71,7 +73,10 @@ defmodule Day07 do
     |> String.split("\n", trim: true)
     |> Enum.map(&instruct/1)
     |> interpret()
-    |> dbg()
+  end
+
+  def free_space(folder) do
+    @total_space - Folder.size(folder)
   end
 
   def answer01(input) do
@@ -86,17 +91,34 @@ defmodule Day07 do
     |> Enum.filter(fn f -> Folder.size(f) <= 100_000 end)
     |> Enum.map(&Folder.size/1)
     |> Enum.sum()
-    |> dbg()
   end
 
   def answer02(input) do
+    folder =
+      input
+      |> parse()
+
+    IO.puts(folder)
+
+    need_to_free_at_least = @required_free_space - free_space(folder)
+    IO.puts("Used space #{Folder.size(folder)}")
+    IO.puts("Free space #{free_space(folder)}")
+    IO.puts("Need at least #{need_to_free_at_least}")
+
+    folder
+    |> Folder.all_folders()
+    |> Enum.map(fn f -> {f.full_path, f.name, Folder.size(f)} end)
+    |> Enum.sort_by(fn f -> elem(f, 2) end)
+    |> Enum.filter(fn {_path, _name, size} -> not (size < need_to_free_at_least) end)
+    |> List.first()
+    |> elem(2)
   end
 
   def main(_args \\ []) do
     input = File.read!("./input.txt")
     answer_01 = answer01(input)
     IO.puts("Answer 1 - #{answer_01}")
-    # answer_02 = answer02(input)
-    # IO.puts("Answer 2 - #{answer_02}")
+    answer_02 = answer02(input)
+    IO.puts("Answer 2 - #{answer_02}")
   end
 end
