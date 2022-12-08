@@ -113,13 +113,67 @@ defmodule Forest do
     ])
   end
 
-  def count_visible(forest) do
+  def all_indexes(forest) do
     for r <- Enum.to_list(Range.new(0, forest.rows - 1)),
         c <- Enum.to_list(Range.new(0, forest.columns - 1)) do
       {r, c}
     end
+  end
+
+  def count_visible(forest) do
+    forest
+    |> all_indexes()
     |> Enum.map(fn index -> visible?(forest, index) end)
     |> Enum.count(fn v -> v == true end)
+  end
+
+  def viewing_distance(forest, direction, {row, column}) do
+    this_tree = Forest.get(forest, {row, column})
+
+    trees =
+      case direction do
+        :up -> Forest.get_up(forest, {row, column}) |> Enum.reverse()
+        :down -> Forest.get_down(forest, {row, column})
+        :left -> Forest.get_left(forest, {row, column}) |> Enum.reverse()
+        :right -> Forest.get_right(forest, {row, column})
+      end
+
+    case trees do
+      [] ->
+        0
+
+      _ ->
+        take_until(trees, this_tree) |> Enum.count()
+    end
+  end
+
+  def take_until([], _val) do
+    []
+  end
+
+  def take_until([i | rest], val) do
+    case i do
+      i when i < val -> [i | take_until(rest, val)]
+      _ -> [i]
+    end
+  end
+
+  def viewing_distances(forest, {row, column}) do
+    [:up, :down, :left, :right]
+    |> Enum.map(fn direction -> Forest.viewing_distance(forest, direction, {row, column}) end)
+  end
+
+  def scenic_score(forest, {row, column}) do
+    Enum.product(viewing_distances(forest, {row, column}))
+  end
+
+  def max_scenic_score(forest) do
+    forest
+    |> all_indexes()
+    |> Enum.map(fn index -> scenic_score(forest, index) end)
+    |> Enum.max()
+
+    # |> dbg()
   end
 end
 

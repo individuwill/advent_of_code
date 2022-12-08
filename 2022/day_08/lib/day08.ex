@@ -5,15 +5,19 @@ defmodule Day08 do
 
   def answer01(input) do
     forest = Forest.new(input)
-    dbg(forest)
-    IO.puts("Rows: #{forest.rows} Columns: #{forest.columns}")
-    # IO.puts(forest)
     Forest.count_visible(forest)
+  end
+
+  def answer02(input) do
+    forest = Forest.new(input)
+    Forest.max_scenic_score(forest)
   end
 
   def main(_args \\ []) do
     input = File.read!("./input.txt")
     answer_01 = answer01(input)
     IO.puts("Answer 1 - #{answer_01}")
+    answer_02 = answer02(input)
+    IO.puts("Answer 2 - #{answer_02}")
   end
 end

@@ -22,6 +22,10 @@ defmodule Day08Test do
     assert Day08.answer01(input()) == 1789
   end
 
+  test "answer 2 input" do
+    assert Day08.answer02(input()) == 314_820
+  end
+
   test "check get left on sample" do
     assert Forest.get_left(sample_forest(), {2, 3}) == [6, 5, 3]
   end
@@ -77,5 +81,38 @@ defmodule Day08Test do
       |> Enum.map(fn index -> Forest.visible?(forest, index) end)
 
     assert result == expected
+  end
+
+  test "check scenic score in sample example 1" do
+    result =
+      sample_forest()
+      |> Forest.scenic_score({1, 2})
+
+    assert result == 4
+  end
+
+  test "check scenic score in sample example 2" do
+    result =
+      sample_forest()
+      |> Forest.scenic_score({3, 2})
+
+    assert result == 8
+  end
+
+  test "check viewing distances in sample example 1" do
+    result =
+      sample_forest()
+      |> Forest.viewing_distances({1, 2})
+
+    #                 u, d, l, r
+    assert result == [1, 2, 1, 2]
+  end
+
+  test "check viewing distances in sample example 2" do
+    result =
+      sample_forest()
+      |> Forest.viewing_distances({3, 2})
+
+    assert result == [2, 1, 2, 2]
   end
 end
