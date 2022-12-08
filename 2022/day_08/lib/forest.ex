@@ -52,6 +52,14 @@ defmodule Forest do
     |> Enum.map(fn i -> Forest.get(forest, i, column) end)
   end
 
+  def get_row(forest, row) do
+    [get(forest, {row, 0}) | get_right(forest, {row, 0})]
+  end
+
+  def get_column(forest, column) do
+    [get(forest, {0, column}) | get_down(forest, {0, column})]
+  end
+
   def get(forest, row, column) do
     Map.get(forest.storage, {row, column})
   end
@@ -179,6 +187,9 @@ end
 
 defimpl String.Chars, for: Forest do
   def to_string(forest) do
-    ""
+    0..(forest.rows - 1)
+    |> Enum.map(fn r -> Forest.get_row(forest, r) end)
+    |> Enum.map(fn row -> Enum.map(row, &Integer.to_string/1) |> Enum.join("") end)
+    |> Enum.join("\n")
   end
 end
