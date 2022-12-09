@@ -60,16 +60,16 @@ defmodule Forest do
     Map.get(forest.storage, {row, column})
   end
 
+  def get(forest, {row, column}) do
+    get(forest, row, column)
+  end
+
   def get_row(forest, row) do
     [get(forest, {row, 0}) | get(:right, forest, {row, 0})]
   end
 
   def get_column(forest, column) do
     [get(forest, {0, column}) | get(:down, forest, {0, column})]
-  end
-
-  def get(forest, {row, column}) do
-    get(forest, row, column)
   end
 
   def put(forest, row, column, value) do
@@ -87,14 +87,7 @@ defmodule Forest do
   def visible?(direction, forest, {row, column}) do
     value = Forest.get(forest, {row, column})
 
-    trees =
-      case direction do
-        :up -> Forest.get(:up, forest, {row, column})
-        :down -> Forest.get(:down, forest, {row, column})
-        :left -> Forest.get(:left, forest, {row, column})
-        :right -> Forest.get(:right, forest, {row, column})
-      end
-
+    trees = Forest.get(direction, forest, {row, column})
     Enum.max(trees) < value
   end
 
@@ -130,11 +123,12 @@ defmodule Forest do
     this_tree = Forest.get(forest, {row, column})
 
     trees =
-      case direction do
-        :up -> Forest.get(:up, forest, {row, column}) |> Enum.reverse()
-        :down -> Forest.get(:down, forest, {row, column})
-        :left -> Forest.get(:left, forest, {row, column}) |> Enum.reverse()
-        :right -> Forest.get(:right, forest, {row, column})
+      cond do
+        direction == :up || direction == :left ->
+          Forest.get(direction, forest, {row, column}) |> Enum.reverse()
+
+        true ->
+          Forest.get(direction, forest, {row, column})
       end
 
     case trees do
