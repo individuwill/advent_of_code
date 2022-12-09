@@ -27,19 +27,19 @@ defmodule Day08Test do
   end
 
   test "check get left on sample" do
-    assert Forest.get_left(sample_forest(), {2, 3}) == [6, 5, 3]
+    assert Forest.get(:left, sample_forest(), {2, 3}) == [6, 5, 3]
   end
 
   test "check get right on sample" do
-    assert Forest.get_right(sample_forest(), {3, 1}) == [5, 4, 9]
+    assert Forest.get(:right, sample_forest(), {3, 1}) == [5, 4, 9]
   end
 
   test "check get up on sample" do
-    assert Forest.get_up(sample_forest(), {3, 2}) == [3, 5, 3]
+    assert Forest.get(:up, sample_forest(), {3, 2}) == [3, 5, 3]
   end
 
   test "check get down on sample" do
-    assert Forest.get_down(sample_forest(), {1, 3}) == [3, 4, 9]
+    assert Forest.get(:down, sample_forest(), {1, 3}) == [3, 4, 9]
   end
 
   test "check all visibility of sample" do
