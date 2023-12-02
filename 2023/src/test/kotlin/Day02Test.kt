@@ -164,16 +164,6 @@ class Day02Test {
         assertEquals(expected, actual)
     }
 
-    //
-//    @Test
-//    fun testSolutionSample02() {
-//        val expected = 281
-//        val sampleInput = """
-//        """.trimIndent()
-//        val actual = today.solution02(sampleInput)
-//        assertEquals(expected, actual)
-//    }
-//
     @Test
     fun testSolution01() {
         val expected = 2545
@@ -183,14 +173,38 @@ class Day02Test {
         val actual = today.solution01(input, givenInput)
         assertEquals(expected, actual)
     }
-//
-//    @Test
-//    fun testSolution02() {
-//        val expected = 55686
-//        val actual = today.solution02(input)
-//        print("actual: $actual")
-//        assertTrue(actual > 55680)
-//        assertEquals(expected, actual)
-//    }
+
+    @Test
+    fun testMinimalRound() {
+        val expected = Round(4, 2, 6)
+        val game = Game(1, listOf(
+                Round(4, 0, 3),
+                Round(1, 2, 6),
+                Round(0, 2, 0)
+        ))
+        val actual = game.minimalRound
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun testSolutionSample02() {
+        val expected = 2286
+        val sampleInput = """
+            Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
+            Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
+            Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
+            Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
+            Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green
+        """.trimIndent()
+        val actual = today.solution02(sampleInput)
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun testSolution02() {
+        val expected = 78111
+        val actual = today.solution02(input)
+        assertEquals(expected, actual)
+    }
 
 }

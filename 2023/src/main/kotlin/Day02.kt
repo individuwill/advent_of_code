@@ -21,6 +21,9 @@ data class Round(val red: Int, val green: Int, val blue: Int) {
     fun isPossibleGiven(round: Round): Boolean {
         return red <= round.red && green <= round.green && blue <= round.blue
     }
+
+    val power: Int
+        get() = red * green * blue
 }
 
 data class Game(val id: Int, val rounds: List<Round>) {
@@ -37,6 +40,14 @@ data class Game(val id: Int, val rounds: List<Round>) {
     fun isPossibleGiven(round: Round): Boolean {
         return rounds.all { it.isPossibleGiven(round) }
     }
+
+    val minimalRound: Round
+        get() {
+            val red = rounds.maxOf { it.red }
+            val green = rounds.maxOf { it.green }
+            val blue = rounds.maxOf { it.blue }
+            return Round(red = red, green = green, blue = blue)
+        }
 }
 
 data class Match(val games: List<Game>) {
@@ -54,6 +65,11 @@ data class Match(val games: List<Game>) {
         }
         return 0
     }
+
+    val power: Int
+        get() = games.sumOf {
+            it.minimalRound.power
+        }
 }
 
 class Day02 {
@@ -64,18 +80,18 @@ class Day02 {
         return match.scoreWith(round)
     }
 
-    fun solution02(matchInput: String, roundInput: String): Int {
+    fun solution02(matchInput: String): Int {
         val match = Match.fromText(matchInput)
-        val round = Round.fromText(roundInput)
-        return match.scoreWith(round)
+        return match.power
     }
 }
 
-//fun main() {
-//    val input = Utils.getResource("day02.txt")
-//    val today = Day02()
-//    val solution01 = today.solution01(input)
-//    val solution02 = today.solution02(input)
-//    println("Solution 01: ${solution01}")
-//    println("Solution 02: ${solution02}")
-//}
+fun main() {
+    val input = Utils.getResource("day02.txt")
+    val today = Day02()
+    val givenInput = "12 red cubes, 13 green cubes, and 14 blue cubes"
+    val solution01 = today.solution01(input, givenInput)
+    val solution02 = today.solution02(input)
+    println("Solution 01: ${solution01}")
+    println("Solution 02: ${solution02}")
+}
