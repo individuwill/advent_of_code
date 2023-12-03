@@ -96,7 +96,7 @@ class Schematic(val input: String) {
                     number.isTouching(gear)
                 }
                 assert(touchedNumbers.count() == 2)
-                touchedNumbers[0].number * touchedNumbers[1].number
+                touchedNumbers.map { it.number }.reduce { acc, i -> acc * i }
             }
             return gearProducts.sum()
         }
