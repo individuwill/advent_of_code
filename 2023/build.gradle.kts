@@ -34,8 +34,6 @@ tasks.test { // See 5️⃣
     }
 }
 
-
-
 kotlin { // Extension for easy setup
     jvmToolchain(17) // Target version of generated JVM bytecode. See 7️⃣
 }
