@@ -39,11 +39,13 @@ class Day02Test {
     @Test
     fun testParseSingleGame() {
         val input = "Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red"
-        val expected = Game(4, listOf(
+        val expected = Game(
+            4, listOf(
                 Round(3, 1, 6),
                 Round(6, 3, 0),
                 Round(14, 3, 15)
-        ))
+            )
+        )
         val actual = Game.fromText(input)
         assertEquals(expected, actual)
     }
@@ -54,18 +56,24 @@ class Day02Test {
             Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
             Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
         """.trimIndent()
-        val expected = Match(listOf(
-                Game(1, listOf(
+        val expected = Match(
+            listOf(
+                Game(
+                    1, listOf(
                         Round(4, 0, 3),
                         Round(1, 2, 6),
                         Round(0, 2, 0)
-                )),
-                Game(2, listOf(
+                    )
+                ),
+                Game(
+                    2, listOf(
                         Round(0, 2, 1),
                         Round(1, 3, 4),
                         Round(0, 1, 1)
-                ))
-        ))
+                    )
+                )
+            )
+        )
         val actual = Match.fromText(input)
         assertEquals(expected, actual)
     }
@@ -86,18 +94,24 @@ class Day02Test {
 
     @Test
     fun testScoreWithNoFittingGiven() {
-        val match = Match(listOf(
-                Game(1, listOf(
+        val match = Match(
+            listOf(
+                Game(
+                    1, listOf(
                         Round(4, 0, 3),
                         Round(1, 2, 6),
                         Round(0, 2, 0)
-                )),
-                Game(2, listOf(
+                    )
+                ),
+                Game(
+                    2, listOf(
                         Round(0, 2, 1),
                         Round(1, 3, 4),
                         Round(0, 1, 1)
-                ))
-        ))
+                    )
+                )
+            )
+        )
         val givenRound = Round(0, 0, 0)
         val expected = 0
         val actual = match.scoreWith(givenRound)
@@ -106,18 +120,24 @@ class Day02Test {
 
     @Test
     fun testScoreWithFirstFittingGiven() {
-        val match = Match(listOf(
-                Game(1, listOf(
+        val match = Match(
+            listOf(
+                Game(
+                    1, listOf(
                         Round(4, 0, 3),
                         Round(1, 2, 6),
                         Round(0, 2, 0)
-                )),
-                Game(2, listOf(
+                    )
+                ),
+                Game(
+                    2, listOf(
                         Round(0, 2, 1),
                         Round(1, 13, 4),
                         Round(0, 1, 1)
-                ))
-        ))
+                    )
+                )
+            )
+        )
         val givenRound = Round(10, 10, 10)
         val expected = 1
         val actual = match.scoreWith(givenRound)
@@ -126,18 +146,24 @@ class Day02Test {
 
     @Test
     fun testScoreWithSecondFittingGiven() {
-        val match = Match(listOf(
-                Game(1, listOf(
+        val match = Match(
+            listOf(
+                Game(
+                    1, listOf(
                         Round(4, 0, 3),
                         Round(1, 12, 6),
                         Round(0, 2, 0)
-                )),
-                Game(2, listOf(
+                    )
+                ),
+                Game(
+                    2, listOf(
                         Round(0, 2, 1),
                         Round(1, 3, 4),
                         Round(0, 1, 1)
-                ))
-        ))
+                    )
+                )
+            )
+        )
         val givenRound = Round(10, 10, 10)
         val expected = 2
         val actual = match.scoreWith(givenRound)
@@ -146,18 +172,24 @@ class Day02Test {
 
     @Test
     fun testScoreWithAllFittingGiven() {
-        val match = Match(listOf(
-                Game(1, listOf(
+        val match = Match(
+            listOf(
+                Game(
+                    1, listOf(
                         Round(4, 0, 3),
                         Round(1, 2, 6),
                         Round(0, 2, 0)
-                )),
-                Game(2, listOf(
+                    )
+                ),
+                Game(
+                    2, listOf(
                         Round(0, 2, 1),
                         Round(1, 3, 4),
                         Round(0, 1, 1)
-                ))
-        ))
+                    )
+                )
+            )
+        )
         val givenRound = Round(10, 10, 10)
         val expected = 3
         val actual = match.scoreWith(givenRound)
@@ -177,11 +209,13 @@ class Day02Test {
     @Test
     fun testMinimalRound() {
         val expected = Round(4, 2, 6)
-        val game = Game(1, listOf(
+        val game = Game(
+            1, listOf(
                 Round(4, 0, 3),
                 Round(1, 2, 6),
                 Round(0, 2, 0)
-        ))
+            )
+        )
         val actual = game.minimalRound
         assertEquals(expected, actual)
     }
