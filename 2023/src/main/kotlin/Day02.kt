@@ -1,19 +1,25 @@
+import io.github.oshai.kotlinlogging.KotlinLogging
+
+private val logger = KotlinLogging.logger {}
+
 data class Round(val red: Int, val green: Int, val blue: Int) {
+//    private val logger = KotlinLogging.logger {}
+
     companion object {
         private val CUBE_REGEX = Regex("""(?<count>\d+) (?<color>red|blue|green)""")
         fun fromText(input: String): Round {
-            println("Constructing round from: `$input`")
+            logger.debug { "Constructing round from: `$input`" }
             val matches = CUBE_REGEX.findAll(input).toList()
-            println(matches)
+            logger.debug { matches }
             assert(matches.size <= 3)
-            val pairs = matches.map { Pair(it.groups["color"]!!.value, it.groups["count"]?.value!!.toInt()) }
-            println(pairs)
-            val pairsDict = pairs.toMap()
-            println(pairsDict)
+            val pairsDict = matches.associate {
+                it.groups["color"]!!.value to it.groups["count"]?.value!!.toInt()
+            }
+            logger.debug { pairsDict }
             return Round(
-                    red = pairsDict.getOrDefault("red", 0),
-                    green = pairsDict.getOrDefault("green", 0),
-                    blue = pairsDict.getOrDefault("blue", 0)
+                red = pairsDict.getOrDefault("red", 0),
+                green = pairsDict.getOrDefault("green", 0),
+                blue = pairsDict.getOrDefault("blue", 0)
             )
         }
     }
@@ -29,10 +35,11 @@ data class Round(val red: Int, val green: Int, val blue: Int) {
 data class Game(val id: Int, val rounds: List<Round>) {
     companion object {
         fun fromText(input: String): Game {
-            println("Constructing game from: `$input`")
-            val id = input.split(":")[0].split(" ")[1].toInt()
-            println("id: $id")
-            val rounds = input.split(":")[1].split(";").map { Round.fromText(it) }
+            logger.debug { "Constructing game from: `$input`" }
+            val (idStr, roundsStr) = input.split(":")
+            val id = idStr.split(" ")[1].toInt()
+            logger.debug { "id: $id" }
+            val rounds = roundsStr.split(";").map { Round.fromText(it) }
             return Game(id, rounds)
         }
     }
@@ -60,10 +67,7 @@ data class Match(val games: List<Game>) {
 
     fun scoreWith(round: Round): Int {
         val fittingGames = games.filter { it.isPossibleGiven(round) }
-        if (fittingGames.isNotEmpty()) {
-            return fittingGames.sumOf { it.id }
-        }
-        return 0
+        return fittingGames.sumOf { it.id }
     }
 
     val power: Int
@@ -92,6 +96,6 @@ fun main() {
     val givenInput = "12 red cubes, 13 green cubes, and 14 blue cubes"
     val solution01 = today.solution01(input, givenInput)
     val solution02 = today.solution02(input)
-    println("Solution 01: ${solution01}")
-    println("Solution 02: ${solution02}")
+    println("Solution 01: $solution01")
+    println("Solution 02: $solution02")
 }
