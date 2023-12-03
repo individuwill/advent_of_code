@@ -20,6 +20,9 @@ dependencies { // All the libraries you want to use. See 4️⃣
     testImplementation(kotlin("test")) // The Kotlin test library
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    implementation("io.github.oshai:kotlin-logging-jvm:5.1.0")
+    implementation("org.slf4j:slf4j-api:2.0.9")
+    implementation("ch.qos.logback:logback-classic:1.4.14")
 }
 
 tasks.test { // See 5️⃣
