@@ -118,9 +118,56 @@ class Day03Test {
     }
 
     @Test
-    fun testSolutionSample02() {
-        val expected = -1
+    fun testTouchedNumbers() {
         val sampleInput = """
+            467..114..
+            ...*......
+            ..35..633.
+            ......#...
+            617*......
+            .....+.58.
+            ..592.....
+            ......755.
+            ...${'$'}.*....
+            .664.598..
+        """.trimIndent()
+        val schematic = Schematic(sampleInput)
+        assertEquals(schematic.hitNumbers.count(), schematic.touchedNumbers.count())
+        assertEquals(schematic.hitNumbers, schematic.touchedNumbers)
+    }
+
+    @Test
+    fun testGears() {
+        val sampleInput = """
+            467..114..
+            ...*......
+            ..35..633.
+            ......#...
+            617*......
+            .....+.58.
+            ..592.....
+            ......755.
+            ...${'$'}.*....
+            .664.598..
+        """.trimIndent()
+        val schematic = Schematic(sampleInput)
+        assertEquals(2, schematic.gears.count())
+    }
+
+    @Test
+    fun testSolutionSample02() {
+        val expected = 467835
+        val sampleInput = """
+            467..114..
+            ...*......
+            ..35..633.
+            ......#...
+            617*......
+            .....+.58.
+            ..592.....
+            ......755.
+            ...${'$'}.*....
+            .664.598..
         """.trimIndent()
         val actual = today.solution02(sampleInput)
         assertEquals(expected, actual)
@@ -128,7 +175,7 @@ class Day03Test {
 
     @Test
     fun testSolution02() {
-        val expected = -1
+        val expected = 81721933
         val actual = today.solution02(input)
         assertEquals(expected, actual)
     }

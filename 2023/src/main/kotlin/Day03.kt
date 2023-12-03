@@ -23,7 +23,7 @@ open class SchematicSequence(val sequence: String, val row: Int, val startColumn
         }
 
     fun isTouching(other: SchematicSequence): Boolean {
-        return borderCoordinates.any { other.borderCoordinates.contains(it) }
+        return other.borderCoordinates.any { allCoordinates.contains(it) }
     }
 
     override fun toString(): String {
@@ -66,9 +66,40 @@ class Schematic(val input: String) {
         get() {
             return numbers.filter { schematicNumber ->
                 schematicNumber.allCoordinates.any { symbolBorders.contains(it) }
-            }
+            }.sortedBy { it.number }
         }
     val hitSum = hitNumbers.sumOf { it.number }
+
+    val touchedNumbers: List<SchematicNumber>
+        get() {
+            return numbers.filter { schematicNumber ->
+                symbols.any { it.isTouching(schematicNumber) }
+            }.sortedBy { it.number }
+        }
+
+
+    val gears: List<SchematicSymbol>
+        get() {
+            return symbols.filter {
+                it.sequence == "*"
+            }.filter {
+                numbers.filter { number ->
+                    number.isTouching(it)
+                }.count() == 2
+            }
+        }
+
+    val gearSum: Int
+        get() {
+            val gearProducts: List<Int> = gears.map { gear ->
+                val touchedNumbers = numbers.filter { number ->
+                    number.isTouching(gear)
+                }
+                assert(touchedNumbers.count() == 2)
+                touchedNumbers[0].number * touchedNumbers[1].number
+            }
+            return gearProducts.sum()
+        }
 
     companion object {
         fun <T> parseForPattern(
@@ -110,7 +141,8 @@ class Day03 {
     }
 
     fun solution02(input: String): Int {
-        return 0
+        val schematic = Schematic(input)
+        return schematic.gearSum
     }
 }
 
