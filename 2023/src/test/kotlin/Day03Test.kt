@@ -61,7 +61,6 @@ class Day03Test {
         """.trimIndent()
         val schematic = Schematic(sampleInput)
         println(schematic.symbolBorders)
-        assertTrue(false)
     }
 
     @Test
