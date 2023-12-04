@@ -3,7 +3,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 private val logger = KotlinLogging.logger {}
 
 
-open class SchematicSequence(val sequence: String, val row: Int, val startColumn: Int) {
+sealed class SchematicSequence(val sequence: String, val row: Int, val startColumn: Int) {
     val endColumn: Int = startColumn + sequence.length - 1
     val allCoordinates: List<Pair<Int, Int>>
         get() {
@@ -120,15 +120,11 @@ class Schematic(val input: String) {
         }
 
         fun parseForNumbers(input: String): List<SchematicNumber> {
-            return parseForPattern(input, """\d+""") { value, row, start ->
-                SchematicNumber(value, row, start)
-            }
+            return parseForPattern(input, """\d+""", ::SchematicNumber)
         }
 
         fun parseForSymbols(input: String): List<SchematicSymbol> {
-            return parseForPattern(input, """[^\d\.]""") { value, row, start ->
-                SchematicSymbol(value, row, start)
-            }
+            return parseForPattern(input, """[^\d\.]""", ::SchematicSymbol)
         }
     }
 }
