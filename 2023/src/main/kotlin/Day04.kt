@@ -1,5 +1,5 @@
 import io.github.oshai.kotlinlogging.KotlinLogging
-import kotlin.math.absoluteValue
+import kotlin.math.min
 import kotlin.math.pow
 
 private val logger = KotlinLogging.logger {}
@@ -10,7 +10,7 @@ data class Card(val id: Int, val winningNumbers: Set<Int>, val myNumbers: Set<In
         fun fromString(line: String): Card {
             val (idRaw, numbersRaw) = line.split(": ")
             val (winningNumbersRaw, myNumbersRaw) = numbersRaw.split(" | ")
-            println("id: '$idRaw', winningNumbers: '$winningNumbersRaw', myNumbers: '$myNumbersRaw'")
+            // println("id: '$idRaw', winningNumbers: '$winningNumbersRaw', myNumbers: '$myNumbersRaw'")
             val winningNumbersList = winningNumbersRaw.trim().split(regex = CARD_SPLIT_NUM_REGEX).map { it.toInt() }
             val myNumbersList = myNumbersRaw.trim().split(regex = CARD_SPLIT_NUM_REGEX).map { it.toInt() }
             val winningNumbersSet = winningNumbersList.toSet()
@@ -43,15 +43,51 @@ data class Card(val id: Int, val winningNumbers: Set<Int>, val myNumbers: Set<In
         } //1 * 2 ^ (matches.size - 1)
 }
 
+class CardManager(val originalCards: List<Card>) {
+    var cardCount: Int = originalCards.size
+    fun scoreToDuplicates(cards: List<Card>): List<Card> {
+        val theseCopies = cards.flatMap { card ->
+            val numberOfMatches = card.matches.size
+            val start = card.id
+            val end = start + numberOfMatches - 1
+            val copies = if (numberOfMatches == 0) {
+                listOf()
+            } else {
+                originalCards.slice(start..end)
+            }
+            copies
+        }
+        cardCount += theseCopies.size
+        return theseCopies
+    }
+
+    fun countEmUp(): Int {
+        var dupes = scoreToDuplicates(originalCards)
+        while (true) {
+            dupes = scoreToDuplicates(dupes)
+            if (dupes.isEmpty()) {
+                break
+            }
+        }
+        return cardCount
+    }
+}
+
 class Day04 {
 
+    fun parseCards(input: String): List<Card> {
+        return input.split("\n").map { Card.fromString(it) }
+    }
+
     fun solution01(input: String): Int {
-        val cards = input.split("\n").map { Card.fromString(it) }
+        val cards = parseCards(input)
         return cards.sumOf { it.score }
     }
 
     fun solution02(input: String): Int {
-        return 0
+        val originalCards = parseCards(input)
+        val cardManager = CardManager(originalCards)
+        return cardManager.countEmUp()
     }
 }
 
