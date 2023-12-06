@@ -53,7 +53,7 @@ class Day05Test {
         val range2 = Day05.SeedRange(13, 50, 4)
         val seedMap1 = Day05.SeedMap("test1", listOf(range1))
         val seedMap2 = Day05.SeedMap("test2", listOf(range2))
-        val almanac = Day05.Almanac(listOf(), listOf(seedMap1, seedMap2))
+        val almanac = Day05.Almanac(listOf<Day05.Seed>().asSequence(), listOf(seedMap1, seedMap2))
         assertEquals(13, almanac.calculateLocation(98))
         assertEquals(14, almanac.calculateLocation(99))
         assertEquals(13, almanac.calculateLocation(50))
@@ -68,7 +68,7 @@ class Day05Test {
         val range2 = Day05.SeedRange(13, 50, 4)
         val seedMap1 = Day05.SeedMap("test1", listOf(range1))
         val seedMap2 = Day05.SeedMap("test2", listOf(range2))
-        val almanac = Day05.Almanac(listOf(Day05.Seed(98), Day05.Seed(56)), listOf(seedMap1, seedMap2))
+        val almanac = Day05.Almanac(listOf(Day05.Seed(98), Day05.Seed(56)).asSequence(), listOf(seedMap1, seedMap2))
         assertEquals(13, almanac.findLowestLocation())
     }
 
@@ -123,8 +123,41 @@ class Day05Test {
 
     @Test
     fun testSolutionSample02() {
-        val expected = -1L
+        val expected = 46L
         val sampleInput = """
+            seeds: 79 14 55 13
+
+            seed-to-soil map:
+            50 98 2
+            52 50 48
+
+            soil-to-fertilizer map:
+            0 15 37
+            37 52 2
+            39 0 15
+
+            fertilizer-to-water map:
+            49 53 8
+            0 11 42
+            42 0 7
+            57 7 4
+
+            water-to-light map:
+            88 18 7
+            18 25 70
+
+            light-to-temperature map:
+            45 77 23
+            81 45 19
+            68 64 13
+
+            temperature-to-humidity map:
+            0 69 1
+            1 0 69
+
+            humidity-to-location map:
+            60 56 37
+            56 93 4
         """.trimIndent()
         val actual = today.solution02(sampleInput)
         assertEquals(expected, actual)
@@ -132,7 +165,7 @@ class Day05Test {
 
     @Test
     fun testSolution02() {
-        val expected = -1L
+        val expected = 78775051L
         val actual = today.solution02(input)
         assertEquals(expected, actual)
     }
