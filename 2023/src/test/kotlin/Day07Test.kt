@@ -55,6 +55,14 @@ class Day07Test {
     }
 
     @Test
+    fun testClassifyCrazyHandString() {
+        assertEquals(Day07.HandType.FOUR_OF_A_KIND, today.classifyCrazyHandString("T55J5"))
+        assertEquals(Day07.HandType.FOUR_OF_A_KIND, today.classifyCrazyHandString("KTJJT"))
+        assertEquals(Day07.HandType.FOUR_OF_A_KIND, today.classifyCrazyHandString("QQQJA"))
+        assertEquals(Day07.HandType.THREE_OF_A_KIND, today.classifyCrazyHandString("TTT98"))
+    }
+
+    @Test
     fun parseHandsAndBids() {
         val expected = listOf(
             Day07.Hand("32T3K", Day07.HandType.ONE_PAIR) to 765L,
@@ -91,7 +99,7 @@ class Day07Test {
 
     @Test
     fun testSolution02() {
-        val expected = -1L
+        val expected = 251037509L
         val actual = today.solution02(input)
         assertEquals(expected, actual)
     }
