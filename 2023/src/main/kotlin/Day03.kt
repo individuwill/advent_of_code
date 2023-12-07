@@ -145,7 +145,6 @@ class Day03 {
 fun main() {
     val input = Utils.getResource("day03.txt")
     val today = Day03()
-    val givenInput = "12 red cubes, 13 green cubes, and 14 blue cubes"
     val solution01 = today.solution01(input)
     val solution02 = today.solution02(input)
     println("Solution 01: $solution01")

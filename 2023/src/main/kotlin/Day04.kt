@@ -32,7 +32,6 @@ data class Card(val id: Int, val winningNumbers: Set<Int>, val myNumbers: Set<In
 
     val score: Int
         get() {
-            val pointScore = 1
             val multiplier: Double = 2.0
             val numMatches = matches.size
             return if (numMatches == 0) {
