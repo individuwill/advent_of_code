@@ -27,6 +27,7 @@ dependencies { // All the libraries you want to use. See 4️⃣
 
 tasks.test { // See 5️⃣
     useJUnitPlatform() // JUnitPlatform for tests. See 6️⃣
+    maxHeapSize = "2g" // Max heap size for tests
     testLogging {
         showStandardStreams = true
         events("passed", "skipped", "failed") // What to log
@@ -39,12 +40,18 @@ kotlin { // Extension for easy setup
 }
 
 application {
-    mainClass.set("MainKt") // The main class of the application
+    mainClass.set("Day06Kt") // The main class of the application
 }
 
 tasks {
     val fatJar = register<Jar>("fatJar") {
-        dependsOn.addAll(listOf("compileJava", "compileKotlin", "processResources")) // We need this for Gradle optimization to work
+        dependsOn.addAll(
+            listOf(
+                "compileJava",
+                "compileKotlin",
+                "processResources"
+            )
+        ) // We need this for Gradle optimization to work
         archiveClassifier.set("standalone") // Naming the jar
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
         manifest { attributes(mapOf("Main-Class" to application.mainClass)) } // Provided we set it up in the application plugin configuration
