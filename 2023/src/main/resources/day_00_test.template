@@ -1,0 +1,44 @@
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
+import kotlin.test.assertFalse
+
+class Day00Test {
+
+    private val today = Day00()
+    private val inputResourceName = this::class.simpleName?.replace("Test", ".txt")!!.lowercase()
+    private val input = Utils.getResource(inputResourceName)
+    private val sampleInput = """
+    """.trimIndent()
+
+
+    @Test
+    fun testSolutionSample01() {
+        val expected = -1
+        val actual = today.solution01(sampleInput)
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun testSolution01() {
+        val expected = -1
+        val actual = today.solution01(input)
+        assertEquals(expected, actual)
+    }
+
+
+    @Test
+    fun testSolutionSample02() {
+        val expected = -1
+        val actual = today.solution02(sampleInput)
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun testSolution02() {
+        val expected = -1
+        val actual = today.solution02(input)
+        assertEquals(expected, actual)
+    }
+
+}

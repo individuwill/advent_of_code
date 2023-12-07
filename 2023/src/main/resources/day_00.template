@@ -1,0 +1,25 @@
+import io.github.oshai.kotlinlogging.KotlinLogging
+
+private val logger = KotlinLogging.logger {}
+
+
+class Day00 {
+
+
+    fun solution01(input: String): Int {
+        return 0
+    }
+
+    fun solution02(input: String): Int {
+        return 0
+    }
+}
+
+fun main() {
+    val input = Utils.getResource("day00.txt")
+    val today = Day00()
+    val solution01 = today.solution01(input)
+    val solution02 = today.solution02(input)
+    println("Solution 01: $solution01")
+    println("Solution 02: $solution02")
+}
