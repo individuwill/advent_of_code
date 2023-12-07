@@ -4,12 +4,12 @@ private val logger = KotlinLogging.logger {}
 
 
 class Day06 {
-    data class Race(val time: Int, val distance: Int)
+    data class Race(val time: Long, val distance: Long)
 
     val spaceRegex = Regex("""\s+""")
 
-    fun parseLine(input: String): List<Int> =
-        input.split(":").last().trim().split(regex = spaceRegex).map(String::toInt)
+    fun parseLine(input: String): List<Long> =
+        input.split(":").last().trim().split(regex = spaceRegex).map(String::toLong)
 
 
     fun parse(input: String): List<Race> =
@@ -17,7 +17,7 @@ class Day06 {
             times zip distances
         }.map { (time, distance) -> Race(time, distance) }
 
-    fun distance(holdTime: Int, timeLimit: Int): Int {
+    fun distance(holdTime: Long, timeLimit: Long): Long {
         if (holdTime >= timeLimit) return 0
         val timeLeft = timeLimit - holdTime
         if (timeLeft <= 0) return 0
@@ -25,19 +25,27 @@ class Day06 {
         return speed * timeLeft
     }
 
-    fun winningCounts(race: Race): Int =
-        (1..race.time).map { distance(it, race.time) }.filter { it > race.distance }.count()
+    fun winningCounts(race: Race): Double =
+        (1..race.time).map { distance(it, race.time) }
+            .fold(0.0) { acc, distance -> acc + if (distance > race.distance) 1 else 0 }
 
-    fun score(races: List<Race>): Int =
-        races.map(::winningCounts).reduce(Int::times)
+    fun score(races: List<Race>): Double =
+        races.map(::winningCounts).reduce(Double::times)
 
+    fun fixRacesToOne(races: List<Race>): Race =
+        races.reduce { acc, r ->
+            Race(
+                "${acc.time}${r.time}".toLong(),
+                "${acc.distance}${r.distance}".toLong()
+            )
+        }
 
-    fun solution01(input: String): Int {
+    fun solution01(input: String): Double {
         return parse(input).let(::score)
     }
 
-    fun solution02(input: String): Int {
-        return 0
+    fun solution02(input: String): Double {
+        return parse(input).let(::fixRacesToOne).let(::winningCounts)
     }
 }
 
