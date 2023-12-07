@@ -13,7 +13,7 @@ class Day06 {
 
 
     fun parse(input: String): List<Race> =
-        input.split("\n").map(::parseLine).let { (times, distances) ->
+        input.trim().split("\n").map(::parseLine).let { (times, distances) ->
             times zip distances
         }.map { (time, distance) -> Race(time, distance) }
 

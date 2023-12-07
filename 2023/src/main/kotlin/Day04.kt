@@ -75,7 +75,7 @@ class CardManager(val originalCards: List<Card>) {
 class Day04 {
 
     fun parseCards(input: String): List<Card> {
-        return input.split("\n").map { Card.fromString(it) }
+        return input.trim().split("\n").map { Card.fromString(it) }
     }
 
     fun solution01(input: String): Int {

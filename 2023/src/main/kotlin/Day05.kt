@@ -174,7 +174,7 @@ class Day05 {
         }
 
         fun parse(): Almanac {
-            val rawChunks = input.split("\n\n")
+            val rawChunks = input.trim().split("\n\n")
             val rawSeeds = rawChunks.first().split("seeds: ").last()
             val seeds = parseSeeds(rawSeeds)
 //            println(seeds)
@@ -185,7 +185,7 @@ class Day05 {
         }
 
         fun parseRanged(): RangedAlmanac {
-            val rawChunks = input.split("\n\n")
+            val rawChunks = input.trim().split("\n\n")
             val rawSeeds = rawChunks.first().split("seeds: ").last()
             val seeds = parseRangedSeeds(rawSeeds)
 //            println(seeds)

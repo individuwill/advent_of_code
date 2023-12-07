@@ -5,10 +5,14 @@ import kotlin.test.assertTrue
 class Day01Test {
 
     private val today = Day01()
-    private val sampleResourceName = this::class.simpleName?.replace("Test", ".sample.txt")!!.lowercase()
-    private val sampleInput = this::class.java.classLoader.getResource(sampleResourceName)!!.readText()
+    private val sampleInput = """
+        1abc2
+        pqr3stu8vwx
+        a1b2c3d4e5f
+        treb7uchet
+    """.trimIndent()
     private val inputResourceName = this::class.simpleName?.replace("Test", ".txt")!!.lowercase()
-    private val input = this::class.java.classLoader.getResource(inputResourceName)?.readText()!!.trim()
+    private val input = Utils.getResource(inputResourceName)
 
     @Test
     fun testSolutionSample01() {
@@ -97,7 +101,7 @@ class Day01Test {
         assertEquals(expected, actual)
     }
 
-        @Test
+    @Test
     fun lastNumberAllWords() {
         val input = "eightwothree"
         val expected = 3

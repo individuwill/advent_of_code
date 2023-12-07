@@ -60,7 +60,7 @@ data class Game(val id: Int, val rounds: List<Round>) {
 data class Match(val games: List<Game>) {
     companion object {
         fun fromText(input: String): Match {
-            val games = input.split("\n").map { Game.fromText(it) }
+            val games = input.trim().split("\n").map { Game.fromText(it) }
             return Match(games)
         }
     }
