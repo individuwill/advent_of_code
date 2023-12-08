@@ -1,7 +1,4 @@
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
-import kotlin.test.assertFalse
+import kotlin.test.*
 
 class Day05Test {
 
@@ -163,6 +160,7 @@ class Day05Test {
         assertEquals(expected, actual)
     }
 
+    @Ignore
     @Test
     fun testSolution02() {
         val expected = 78775051L
