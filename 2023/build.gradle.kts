@@ -26,6 +26,7 @@ dependencies { // All the libraries you want to use. See 4️⃣
     implementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
     implementation("io.ktor:ktor-client-core:2.3.6")
     implementation("io.ktor:ktor-client-cio:2.3.6")
+    implementation(kotlin("reflect"))
 }
 
 tasks.test { // See 5️⃣
@@ -43,7 +44,7 @@ kotlin { // Extension for easy setup
 }
 
 application {
-    mainClass.set("Day06Kt") // The main class of the application
+    mainClass.set("UtilsKt") // The main class of the application
 }
 
 tasks {

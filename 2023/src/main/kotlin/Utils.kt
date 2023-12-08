@@ -6,6 +6,8 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.client.engine.cio.*
 import kotlinx.coroutines.runBlocking
+import kotlin.reflect.KFunction
+import kotlin.reflect.jvm.kotlinFunction
 
 val dotenv = dotenv()
 
@@ -22,7 +24,7 @@ class Utils {
             val url = "https://adventofcode.com/$year/day/$day/input"
             var data = ""
             runBlocking {
-                val client = HttpClient(CIO).use { client ->
+                HttpClient(CIO).use { client ->
                     val response = client.request(url) {
                         cookie("session", sessionKey)
                     }
@@ -52,8 +54,21 @@ class Utils {
 }
 
 fun main() {
-//    val input = Utils.getInput(2023, 6)
-//    println(input)
-    val x = Utils.getResource("day05.txt")
-    println(x)
+    val mainFunctions = mutableListOf<Pair<String, KFunction<*>>>()
+    (1..25).map {
+        "Day%02dKt".format(it)
+    }.forEach { klassName ->
+        try {
+            val klass = Class.forName(klassName)
+            val mainFunction = klass.getDeclaredMethod("main").kotlinFunction
+            if (mainFunction != null) {
+                mainFunctions.add(klassName.split("Kt").first() to mainFunction)
+            }
+        } catch (e: Exception) {
+
+        }
+    }
+    val (mostRecentDay, mostRecentFunction) = mainFunctions.last()
+    println("Executing most recent day: $mostRecentDay")
+    mostRecentFunction.call()
 }
