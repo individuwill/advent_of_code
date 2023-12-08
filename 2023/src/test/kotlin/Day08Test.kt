@@ -1,7 +1,4 @@
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
-import kotlin.test.assertFalse
+import kotlin.test.*
 
 class Day08Test {
 
@@ -71,22 +68,54 @@ class Day08Test {
 
     @Test
     fun testSolution01() {
-        val expected = 13019
+        val expected = 13019L
         val actual = today.solution01(input)
         assertEquals(expected, actual)
     }
 
-
     @Test
-    fun testSolutionSample02() {
-        val expected = -1
-        val actual = today.solution02(sampleInput)
+    fun testCorrectTableLength() {
+        val sampleInput = """
+            LR
+
+            11A = (11B, XXX)
+            11B = (XXX, 11Z)
+            11Z = (11B, XXX)
+            22A = (22B, XXX)
+            22B = (22C, 22C)
+            22C = (22Z, 22Z)
+            22Z = (22B, 22B)
+            XXX = (XXX, XXX)
+        """.trimIndent()
+        val camelMap = today.parse(sampleInput)
+        val expected = 8
+        val actual = camelMap.table.size
         assertEquals(expected, actual)
     }
 
     @Test
+    fun testSolutionSample02() {
+        val sampleInput = """
+            LR
+
+            11A = (11B, XXX)
+            11B = (XXX, 11Z)
+            11Z = (11B, XXX)
+            22A = (22B, XXX)
+            22B = (22C, 22C)
+            22C = (22Z, 22Z)
+            22Z = (22B, 22B)
+            XXX = (XXX, XXX)
+        """.trimIndent()
+        val expected = 6.0
+        val actual = today.solution02(sampleInput)
+        assertEquals(expected, actual)
+    }
+
+    @Ignore
+    @Test
     fun testSolution02() {
-        val expected = -1
+        val expected = -1.0
         val actual = today.solution02(input)
         assertEquals(expected, actual)
     }
