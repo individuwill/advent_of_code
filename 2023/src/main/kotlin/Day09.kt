@@ -32,11 +32,22 @@ class Day09 {
         return newValue
     }
 
+    fun calculateNewValueStart(currentSequence: List<Double>, bottom: Double): Double {
+        return currentSequence.first() - bottom
+    }
+
     fun predictNext(input: List<List<Double>>): Double {
         if (input.isEmpty()) {
             return 0.0
         }
         return calculateNewValue(input.first(), predictNext(input.drop(1)))
+    }
+
+    fun predictPrevious(input: List<List<Double>>): Double {
+        if (input.isEmpty()) {
+            return 0.0
+        }
+        return calculateNewValueStart(input.first(), predictPrevious(input.drop(1)))
     }
 
     fun solution01(input: String): Double {
@@ -46,7 +57,9 @@ class Day09 {
     }
 
     fun solution02(input: String): Double {
-        return 0.0
+        return parseToNumbers(input).sumOf { history ->
+            history.let(::subSequences).let(::predictPrevious)
+        }
     }
 }
 
