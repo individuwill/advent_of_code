@@ -18,18 +18,18 @@ class Day10 {
         OUT_OF_BOUNDS('O'),
     }
 
-    class Walker(val map: List<MutableList<Token>>) {
+    class Walker(val worldMap: List<MutableList<Token>>) {
         var column = 0
         var row = 0
         var stepCount = 0.0
         fun moveToStart(): Pair<Int, Int> {
             stepCount = 0.0
-            map.forEachIndexed { y, line ->
+            worldMap.forEachIndexed { y, line ->
 //                println("line: $line, y: $y")
                 line.forEachIndexed { x, token ->
 //                    println("token: $token, x: $x")
                     if (token == Token.START) {
-                        println("found start at x (column): $x, y (row): $y")
+//                        println("found start at x (column): $x, y (row): $y")
                         column = x
                         row = y
                     }
@@ -39,11 +39,11 @@ class Day10 {
         }
 
         fun peekTokenOrBlankAt(r: Int, c: Int): Token {
-            println("peekTokenOrBlankAt($r, $c)")
-            return if (r < 0 || r >= map.size || c < 0 || c >= map[r].size) {
+//            println("peekTokenOrBlankAt($r, $c)")
+            return if (r < 0 || r >= worldMap.size || c < 0 || c >= worldMap[r].size) {
                 Token.OUT_OF_BOUNDS
             } else {
-                map[r][c]
+                worldMap[r][c]
             }
         }
 
@@ -52,7 +52,7 @@ class Day10 {
         }
 
         fun step(): Token {
-            println("step $stepCount: $current at row: $row, column: $column")
+//            println("step $stepCount: $current at row: $row, column: $column")
             stepCount++
             val previous = current
             val previousRow = row
@@ -67,12 +67,12 @@ class Day10 {
                 Token.START -> northSouthEastWest()
                 else -> throw IllegalStateException("no ground to step on")
             }
-            map[previousRow][previousColumn] = Token.VISITED
+            worldMap[previousRow][previousColumn] = Token.VISITED
             return movedTo
         }
 
         fun northSouthEastWest(): Token {
-            println("northSouthEastWest")
+//            println("northSouthEastWest")
             if (peekTokenOrBlankAt(row - 1, column).let(::isGoodNextStep)) {
                 return north()
             } else if (peekTokenOrBlankAt(row + 1, column).let(::isGoodNextStep)) {
@@ -153,13 +153,13 @@ class Day10 {
                 } while (current != Token.START)
             } catch (e: IllegalStateException) {
                 println("caught exception: $e")
-                println(e.stackTraceToString())
+//                println(e.stackTraceToString())
             }
             return stepCount
         }
 
         val current: Token
-            get() = map[row][column]
+            get() = worldMap[row][column]
 
         fun north(): Token {
             row--
@@ -206,8 +206,28 @@ class Day10 {
         return steps / 2
     }
 
-    fun solution02(input: String): Int {
-        return 0
+    fun solution02(input: String): Double {
+        val walker = parse(input).let(::Walker)
+        walker.moveToStart()
+        val steps = walker.walkLoop()
+        val visual = walker.worldMap.map { line ->
+            val numStartBlanks = line.takeWhile { it != Token.VISITED }.map { " " }.joinToString("")
+            val lineString = line.map { it.value }.joinToString("")
+            val cleanBeginning = numStartBlanks + lineString.drop(numStartBlanks.length)
+            val numEndBlanks = line.takeLastWhile { it != Token.VISITED }.map { " " }.joinToString("")
+            val cleanEnd = cleanBeginning.dropLast(numEndBlanks.length) + numEndBlanks
+            val remarkedTiles = cleanEnd.map { if (it !in listOf(' ', 'V')) "." else it }.joinToString("")
+            remarkedTiles
+        }.joinToString("\n")
+        val visualUpdated = (visual zip input).map { (v, i) ->
+            if (v == 'V') {
+                i
+            } else {
+                v
+            }
+        }.joinToString("").let(::renderAsDrawing)
+        println(visualUpdated)
+        return steps / 2
     }
 }
 

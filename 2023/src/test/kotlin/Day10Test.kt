@@ -100,14 +100,14 @@ class Day10Test {
 
     @Test
     fun testSolutionSample02() {
-        val expected = -1
+        val expected = -1.0
         val actual = today.solution02(sampleInput)
         assertEquals(expected, actual)
     }
 
     @Test
     fun testSolution02() {
-        val expected = -1
+        val expected = -1.0
         val actual = today.solution02(input)
         assertEquals(expected, actual)
     }
